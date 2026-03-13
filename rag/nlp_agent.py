@@ -28,9 +28,9 @@ def get_sql_agent(db_uri="sqlite:///data/supply_chain.db", api_key=None):
     
     # Use Gemini via langchain_google_genai
     if api_key:
-        llm = ChatGoogleGenerativeAI(model="gemini-1.5-flash", temperature=0, google_api_key=api_key)
+        llm = ChatGoogleGenerativeAI(model="gemini-2.0-flash", temperature=0, google_api_key=api_key)
     else:
-        llm = ChatGoogleGenerativeAI(model="gemini-1.5-flash", temperature=0)
+        llm = ChatGoogleGenerativeAI(model="gemini-2.0-flash", temperature=0)
     
     execute_query = QuerySQLDatabaseTool(db=db)
     write_query = create_sql_query_chain(llm, db)
