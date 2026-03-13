@@ -1139,3 +1139,11 @@ INFO:     127.0.0.1:60934 - "POST /api/chat HTTP/1.1" 200 OK
   "output": "I couldn't find a phone number for Global Machining Solutions. The contact information I have is sales@globalmachining.com."
 }
 INFO:     127.0.0.1:38798 - "POST /api/chat HTTP/1.1" 200 OK
+INFO:     127.0.0.1:34120 - "GET /api/schema HTTP/1.1" 200 OK
+INFO:     127.0.0.1:34120 - "GET /api/schema HTTP/1.1" 200 OK
+INFO:     127.0.0.1:34120 - "GET /api/docs HTTP/1.1" 200 OK
+INFO:     127.0.0.1:34120 - "GET /api/docs HTTP/1.1" 200 OK
+INFO:     127.0.0.1:34120 - "GET /api/docs/README.md HTTP/1.1" 200 OK
+INFO:     127.0.0.1:34120 - "GET /api/docs/README.md HTTP/1.1" 200 OK
+INFO:     127.0.0.1:34120 - "GET /api/docs/DEPLOY.md HTTP/1.1" 200 OK
+INFO:     127.0.0.1:34120 - "GET /api/docs/docs/ARCHITECTURE.md HTTP/1.1" 200 OK

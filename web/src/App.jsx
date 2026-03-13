@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Routes, Route, useNavigate, useLocation } from 'react-router-dom';
-import { Shield, Database, FileText, Upload, Play, Server, Beaker, Network, Github } from 'lucide-react';
+import { Shield, Database, FileText, Upload, Play, Server, Beaker, Network, Github, BookOpen } from 'lucide-react';
 import ReactMarkdown from 'react-markdown';
 import './App.css';
 
@@ -22,8 +22,8 @@ const Sidebar = () => {
       <div className="sidebar-brand">
         <Server size={24} className="brand-icon" />
         <div>
-          <h2 className="brand-title">A&D Supply</h2>
-          <span className="brand-subtitle">Project Workspace</span>
+          <h2 className="brand-title">Aerospace & Defense</h2>
+          <span className="brand-subtitle">Supply Chain Platform</span>
         </div>
       </div>
       <nav className="sidebar-nav">
@@ -66,10 +66,15 @@ const LandingPage = ({ apiKey, setApiKey }) => {
   return (
     <div className="page-container landing">
       <div className="hero-section">
-        <h1 className="hero-title">A&D Supply Chain Verifier</h1>
+        <h1 className="hero-title">Aerospace & Defense Supply Chain</h1>
         <p className="hero-description">
           Your AI-Powered Systems Engineering Co-Pilot. Automate the interrogation of your supply chain database using native, zero-billing Gemini LangChain reasoning blocks.
         </p>
+        <div className="hero-actions">
+          <button className="btn-secondary" onClick={() => navigate('/docs')}>
+            <BookOpen size={18} /> How It Works
+          </button>
+        </div>
       </div>
 
       <div className="feature-cards">
@@ -120,7 +125,7 @@ const AgentPage = ({ apiKey }) => {
   ];
 
   const [messages, setMessages] = useState([
-    { role: 'assistant', content: `**Welcome to the A&D Supply Chain Intelligence Agent.**\n\nI am a LangChain text-to-SQL agent connected locally to your SQLite supply chain database. I can answer complex questions about your Parts, Suppliers, and Work Orders by writing and executing SQL queries autonomously on your behalf.\n\nEnsure you have configured your Mission Control with a valid Gemini API key to begin!` }
+    { role: 'assistant', content: `**Welcome to the Aerospace & Defense Supply Chain Intelligence Agent.**\n\nI am a LangChain text-to-SQL agent connected locally to your SQLite supply chain database. I can answer complex questions about your Parts, Suppliers, and Work Orders by writing and executing SQL queries autonomously on your behalf.\n\nEnsure you have configured your Mission Control with a valid Gemini API key to begin!` }
   ]);
   const [input, setInput] = useState('');
   const [loading, setLoading] = useState(false);
