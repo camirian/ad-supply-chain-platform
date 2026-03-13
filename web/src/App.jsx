@@ -104,10 +104,10 @@ const LandingPage = ({ apiKey, setApiKey }) => {
 
 const AgentPage = ({ apiKey }) => {
   const suggestionQueries = [
-    "List all suppliers located in Seattle.",
+    "Which supplier has the highest rating, and what part do they supply?",
     "What are the most expensive parts in our inventory?",
     "Show me all work orders for the Titanium Compressor Blade.",
-    "Which supplier has the highest rating, and what part do they supply?"
+    "List all parts that currently have a stock quantity below 50."
   ];
 
   const [messages, setMessages] = useState([

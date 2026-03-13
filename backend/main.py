@@ -1,8 +1,14 @@
 from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
+from typing import Optional, List
 import sqlite3
 import os
+
+import logging
+logging.basicConfig(level=logging.DEBUG)
+import langchain
+langchain.debug = True
 
 from rag.nlp_agent import query_agent
 
