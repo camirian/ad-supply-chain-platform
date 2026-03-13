@@ -17,6 +17,21 @@ This project leverages a LangChain text-to-SQL architecture to query a relationa
 - **Premium Frontend**: An accessible and highly aesthetic React web application providing a dynamic chat interface and schema parsing.
 - **Zero-Billing**: Configured explicitly for Google Cloud Run scale-to-zero serverless environments.
 
+## Advanced Sample Queries
+Once the backend is configured with your Gemini API Key, try asking the Agent Chat these complex enterprise questions:
+
+1. **Test a Multi-Table Join:**
+*"Show me the description of all parts that are currently in 'Blocked' status in the Work Orders table, and tell me the name of the supplier for those parts."*
+
+2. **Test Mathematical Aggregation:**
+*"What is the total sum value of all parts currently held in inventory?"* 
+
+3. **Test Boundary / Negative Conditions:**
+*"What is the phone number for Global Machining Solutions?"* 
+
+4. **Test Advanced Filtering:**
+*"Which supplier has the highest rating, and what part do they supply?"*
+
 ## Local Quickstart 
 
 ### Installation

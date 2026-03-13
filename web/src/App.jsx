@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Routes, Route, useNavigate, useLocation } from 'react-router-dom';
-import { Shield, Database, FileText, Upload, Play, Server, Beaker, Network } from 'lucide-react';
+import { Shield, Database, FileText, Upload, Play, Server, Beaker, Network, Github } from 'lucide-react';
 import ReactMarkdown from 'react-markdown';
 import './App.css';
 
@@ -38,6 +38,15 @@ const Sidebar = () => {
           </button>
         ))}
       </nav>
+      <div className="sidebar-footer">
+        <p className="copyright">© 2026 A&D Supply Chain Platform</p>
+        <div className="author-link">
+          <span>Built by</span>
+          <a href="https://github.com/camirian" target="_blank" rel="noreferrer" className="github-link">
+            camirian <Github size={16} />
+          </a>
+        </div>
+      </div>
     </aside>
   );
 };
