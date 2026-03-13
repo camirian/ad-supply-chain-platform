@@ -7,6 +7,14 @@ This project leverages a LangChain text-to-SQL architecture to query a relationa
 > *   [🚀 QUICKSTART: Deploying this Template](DEPLOY.md)
 > *   [🏗️ READ: Architectural Architecture](docs/ARCHITECTURE.md)
 
+## 🚀 Live Demo
+
+> **[▶ Launch Aerospace & Defense Supply Chain](https://ad-supply-frontend-705975127752.us-central1.run.app)** — Deployed on Google Cloud Run
+
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![Python 3.10+](https://img.shields.io/badge/python-3.10+-blue.svg)](https://www.python.org/downloads/)
+[![Google Cloud Run](https://img.shields.io/badge/Deployed-Google%20Cloud%20Run-4285F4?logo=googlecloud&logoColor=white)](https://ad-supply-frontend-705975127752.us-central1.run.app)
+
 ## Features
 - **Relational Backend**: A normalized `SQLite` database modeling typical A&D supply chain entities (Parts, Suppliers, Work Orders), suitable for ephemeral container execution.
 - **Conversational RAG / NLP Agent**: Natural language to SQL translation using `LangChain` and **Google Gemini 1.5-Flash**.

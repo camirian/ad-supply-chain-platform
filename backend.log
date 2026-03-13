@@ -1250,3 +1250,7 @@ INFO:     127.0.0.1:40212 - "OPTIONS /api/chat HTTP/1.1" 200 OK
 INFO:     127.0.0.1:40220 - "POST /api/chat HTTP/1.1" 500 Internal Server Error
 INFO:     127.0.0.1:43566 - "GET /api/schema HTTP/1.1" 200 OK
 INFO:     127.0.0.1:43566 - "GET /api/schema HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50884 - "GET /api/schema HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50884 - "GET /api/schema HTTP/1.1" 200 OK
+INFO:     127.0.0.1:55728 - "GET /api/schema HTTP/1.1" 200 OK
+INFO:     127.0.0.1:55728 - "GET /api/schema HTTP/1.1" 200 OK
