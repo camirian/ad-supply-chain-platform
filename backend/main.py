@@ -23,6 +23,7 @@ app.add_middleware(
 
 class ChatRequest(BaseModel):
     prompt: str
+    api_key: str | None = None
 
 class ChatResponse(BaseModel):
     response: str
@@ -37,14 +38,37 @@ def chat_endpoint(request: ChatRequest):
     Accepts a natural language prompt and returns the result from the text-to-SQL logic block.
     """
     try:
-        # Check for fake key explicitly to mimic the old system warning
-        if os.environ.get("GOOGLE_API_KEY") == "fake-key-for-testing" or not os.environ.get("GOOGLE_API_KEY"):
-            return ChatResponse(response=f"[Simulated Response]: You asked '{request.prompt}'. Please provide a GOOGLE_API_KEY to execute.")
+        # Ensure we have a valid key to use
+        key_to_use = request.api_key or os.environ.get("GOOGLE_API_KEY")
+        
+        if key_to_use in ["fake-key-for-testing", None, ""]:
+            return ChatResponse(response=f"[Simulated Response]: You asked '{request.prompt}'. Please provide a valid GOOGLE_API_KEY to execute.")
             
-        answer = query_agent(request.prompt)
+        answer = query_agent(request.prompt, api_key=key_to_use)
         return ChatResponse(response=answer)
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
+
+@app.get("/api/docs")
+def list_docs():
+    """Returns a list of available documentation files."""
+    return {"docs": ["README.md", "DEPLOY.md", "docs/ARCHITECTURE.md"]}
+
+@app.get("/api/docs/{doc_id:path}")
+def get_doc(doc_id: str):
+    """Fetches a specific documentation file."""
+    base_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+    target = os.path.abspath(os.path.join(base_dir, doc_id))
+    
+    # Security: prevent directory traversal
+    if not target.startswith(base_dir):
+        raise HTTPException(status_code=403, detail="Invalid path")
+    if not os.path.exists(target):
+        raise HTTPException(status_code=404, detail="Document not found")
+        
+    with open(target, 'r') as f:
+        content = f.read()
+    return {"content": content}
 
 @app.get("/api/schema")
 def get_schema():

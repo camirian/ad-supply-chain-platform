@@ -9,13 +9,13 @@ from operator import itemgetter
 from langchain_core.output_parsers import StrOutputParser
 from langchain_core.runnables import RunnablePassthrough
 
-def get_sql_agent(db_uri="sqlite:///data/supply_chain.db"):
+def get_sql_agent(db_uri="sqlite:///data/supply_chain.db", api_key=None):
     """
     Initializes and returns a LangChain Runnable that translates a natural 
     language question into a SQL query, executes it against the local SQLite 
     database, and formulates a human-readable response using Gemini.
     """
-    if "GOOGLE_API_KEY" not in os.environ:
+    if not api_key and "GOOGLE_API_KEY" not in os.environ:
         os.environ["GOOGLE_API_KEY"] = "fake-key-for-testing"
         print("Warning: GOOGLE_API_KEY not set in environment.", file=sys.stderr)
 
@@ -27,7 +27,10 @@ def get_sql_agent(db_uri="sqlite:///data/supply_chain.db"):
     db = SQLDatabase.from_uri(db_uri_absolute)
     
     # Use Gemini via langchain_google_genai
-    llm = ChatGoogleGenerativeAI(model="gemini-1.5-flash", temperature=0)
+    if api_key:
+        llm = ChatGoogleGenerativeAI(model="gemini-1.5-flash", temperature=0, google_api_key=api_key)
+    else:
+        llm = ChatGoogleGenerativeAI(model="gemini-1.5-flash", temperature=0)
     
     execute_query = QuerySQLDatabaseTool(db=db)
     write_query = create_sql_query_chain(llm, db)
@@ -52,11 +55,11 @@ Answer: """
     
     return chain
 
-def query_agent(question: str) -> str:
+def query_agent(question: str, api_key: str = None) -> str:
     """
     Convenience function to invoke the SQL agent with a given question.
     """
-    chain = get_sql_agent()
+    chain = get_sql_agent(api_key=api_key)
     try:
         response = chain.invoke({"question": question})
         return response
