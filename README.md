@@ -5,6 +5,7 @@ This project leverages a LangChain text-to-SQL architecture to query a relationa
 
 > **Breadcrumb Protocol**
 > *   [🚀 QUICKSTART: Deploying this Template](DEPLOY.md)
+> *   [📖 READ: Walkthrough & Usage Instructions](WALKTHROUGH.md)
 > *   [🏗️ READ: Architectural Architecture](docs/ARCHITECTURE.md)
 
 ## 🚀 Live Demo
@@ -73,3 +74,11 @@ npm run dev
 ```
 
 Navigate to `http://localhost:5173` to query the agent!
+
+## 🤝 Contributing
+
+We welcome contributions! Please see [CONTRIBUTING.md](CONTRIBUTING.md) for details on architectural constraints, development workflow, and commit standards.
+
+## 📜 License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
