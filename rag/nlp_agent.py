@@ -9,6 +9,25 @@ from operator import itemgetter
 from langchain_core.output_parsers import StrOutputParser
 from langchain_core.runnables import RunnablePassthrough
 
+
+def clean_sql(query_input):
+    """
+    Sanitizes LLM-generated SQL by stripping common prefixes and markdown wrappers.
+    Accepts either a raw string or a LangChain dict with a 'query' key.
+    """
+    if isinstance(query_input, dict):
+        q = query_input.get("query", "")
+    else:
+        q = query_input
+    if q.startswith("SQLQuery:"):
+        q = q[len("SQLQuery:"):].strip()
+    if q.startswith("```sql"):
+        q = q[len("```sql"):].strip()
+    if q.endswith("```"):
+        q = q[:-3].strip()
+    return q
+
+
 def get_sql_agent(db_uri="sqlite:///data/supply_chain.db", api_key=None):
     """
     Initializes and returns a LangChain Runnable that translates a natural 
@@ -45,18 +64,6 @@ Answer: """
     )
     
     answer = answer_prompt | llm | StrOutputParser()
-
-    def clean_sql(query_dict):
-        # Langchain create_sql_query_chain sometimes prefixes with "SQLQuery: "
-        # Or wraps it in ```sql ... ```
-        q = query_dict["query"]
-        if q.startswith("SQLQuery:"):
-            q = q[len("SQLQuery:"):].strip()
-        if q.startswith("```sql"):
-            q = q[len("```sql"):].strip()
-        if q.endswith("```"):
-            q = q[:-3].strip()
-        return q
     
     chain = (
         RunnablePassthrough.assign(query=write_query).assign(

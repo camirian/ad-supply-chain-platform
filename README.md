@@ -12,6 +12,7 @@ This project leverages a LangChain text-to-SQL architecture to query a relationa
 
 > **[▶ Launch Aerospace & Defense Supply Chain](https://ad-supply-frontend-705975127752.us-central1.run.app)** — Deployed on Google Cloud Run
 
+[![CI](https://github.com/camirian/ad-supply-chain-platform/actions/workflows/pytest.yml/badge.svg)](https://github.com/camirian/ad-supply-chain-platform/actions/workflows/pytest.yml)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Python 3.10+](https://img.shields.io/badge/python-3.10+-blue.svg)](https://www.python.org/downloads/)
 [![Google Cloud Run](https://img.shields.io/badge/Deployed-Google%20Cloud%20Run-4285F4?logo=googlecloud&logoColor=white)](https://ad-supply-frontend-705975127752.us-central1.run.app)
