@@ -42,12 +42,10 @@ flowchart TD
         Database[("SQLite Database<br>[Ephemeral File]<br><br>Stores dummy supply chain<br>snapshots")]:::db
     end
 
-    Manager --- Rel1["Uses UI chat"]:::edgeLabel
-    Rel1 --> Frontend
+    Manager -->|"Uses UI chat"| Frontend
     Frontend -->|"RESTful API Calls (JSON)"| Backend
     Backend -->|"Reads/Executes schemas"| Database
-    Backend --- Rel2["Sends context & questions<br>for query rendering"]:::edgeLabel
-    Rel2 --> GeminiAPI
+    Backend -->|"Sends context & questions<br>for query rendering"| GeminiAPI
     
     style CloudRun fill:none,stroke:#666,stroke-width:2px,stroke-dasharray: 5 5
 ```
@@ -74,8 +72,7 @@ flowchart TD
     Router -->|"Passes parameters"| AgentModule
     AgentModule -->|"Validates queries"| SQLTool
     SQLTool --> Database
-    AgentModule --- Rel1["Sends schema DB schema & prompts"]:::edgeLabel
-    Rel1 --> GeminiAPI
+    AgentModule -->|"Sends schema DB schema & prompts"| GeminiAPI
     
     style BackendApp fill:none,stroke:#666,stroke-width:2px,stroke-dasharray: 5 5
 ```
