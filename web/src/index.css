@@ -1,0 +1,4 @@
+/* Cleared default index.css to rely purely on App.css for our premium styling */
+body {
+    margin: 0;
+}

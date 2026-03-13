@@ -1,59 +1,86 @@
-# System Architecture & Database Design
+# System Architecture: A&D Supply Chain AI Agent
 
-This document details the backend architecture, schema design, and NLP abstraction layer for the A&D Supply Chain AI Agent.
+This document outlines the formal C4 (Context, Container, Component) architecture for the **A&D Supply Chain Platform**, pivoted to a decoupled FastAPI and React stack designed for zero-billing serverless execution on Google Cloud Run.
 
-## Overview
-The platform connects a conversational Streamlit frontend to an underlying relational SQLite database using LangChain's text-to-SQL logic. This allows users to ask unstructured questions and receive structured data analysis in return.
+This formalization substantiates Applied AI Architect and Systems Engineering software design claims (`CPS_CAP_05`, `CPS_NAV_01`).
+
+## 1. System Context Diagram
+*The high-level view showing how users and external systems interact with the platform.*
 
 ```mermaid
-graph TD;
-    User((User)) -->|Natural Language| Streamlit[Streamlit Chat UI];
-    Streamlit -->|Query| Agent[LangChain NLP Agent];
-    Agent -->|1. Fetch Schema| DB[(SQLite Database)];
-    DB -->|Schema Data| Agent;
-    Agent -->|2. Generate & Execute SQL| DB;
-    DB -->|3. Query Results| Agent;
-    Agent -->|4. Conversational Answer| Streamlit;
+flowchart TD
+    classDef person fill:#08427b,color:#fff,stroke:#052e56,stroke-width:2px
+    classDef system fill:#1168bd,color:#fff,stroke:#0b4884,stroke-width:2px
+    classDef ext_system fill:#999999,color:#fff,stroke:#6b6b6b,stroke-width:2px
+
+    Manager(["Supply Chain Manager<br>[Person]"]):::person
+    
+    Agent["A&D Supply Chain Agent<br>[System]"]:::system
+    GeminiAPI["Google Gemini API<br>[External System]"]:::ext_system
+
+    Manager -->|"Queries inventory, suppliers, <br>and lead times"| Agent
+    Agent -->|"Prompts text-to-SQL logic block"| GeminiAPI
 ```
 
-## Relational Database Architecture
+## 2. Container Diagram
+*The distinct deployable units that make up the software system.*
 
-The core relational database modeled in SQLite (`data/supply_chain.db`) follows standard third normal form (3NF) principles to reflect typical depot production control environments. 
+```mermaid
+flowchart TD
+    classDef person fill:#08427b,color:#fff,stroke:#052e56,stroke-width:2px
+    classDef container fill:#438dd5,color:#fff,stroke:#3c7fc0,stroke-width:2px
+    classDef ext_system fill:#999999,color:#fff,stroke:#6b6b6b,stroke-width:2px
+    classDef db fill:#438dd5,color:#fff,stroke:#3c7fc0,stroke-width:2px
+    classDef edgeLabel fill:none,stroke:none
 
-### Tables and Relationships
+    Manager(["Supply Chain Manager<br>[Person]"]):::person
+    GeminiAPI["Google Gemini API<br>[External System]"]:::ext_system
 
-1. **Suppliers**:
-   - `supplier_id` (PK)
-   - `name`: E.g., 'AeroTech Dynamics'
-   - `rating`: Float value out of 5.0
-   - `certification_status`: String (e.g., AS9100D, NADCAP)
-   - `contact_info`: Contact string.
+    subgraph CloudRun ["Google Cloud Run Environment (Zero Billing)"]
+        Frontend["React Web Frontend<br>[Vite, SPA]<br><br>Provides chat UI and<br>schema visualizer"]:::container
+        Backend["FastAPI Backend<br>[Python 3.10+]<br><br>Handles LLM orchestration<br>and SQL execution"]:::container
+        Database[("SQLite Database<br>[Ephemeral File]<br><br>Stores dummy supply chain<br>snapshots")]:::db
+    end
 
-2. **Parts**:
-   - `part_id` (PK)
-   - `part_number`: (Unique) E.g., 'PT-1001'
-   - `description`: Text descriptor
-   - `supplier_id` (FK): Links to `Suppliers`
-   - `lead_time_days`: Integer
-   - `unit_cost`: Float
-   - `stock_quantity`: Integer
+    Manager --- Rel1["Uses UI chat"]:::edgeLabel
+    Rel1 --> Frontend
+    Frontend -->|"RESTful API Calls (JSON)"| Backend
+    Backend -->|"Reads/Executes schemas"| Database
+    Backend --- Rel2["Sends context & questions<br>for query rendering"]:::edgeLabel
+    Rel2 --> GeminiAPI
+    
+    style CloudRun fill:none,stroke:#666,stroke-width:2px,stroke-dasharray: 5 5
+```
 
-3. **WorkOrders**:
-   - `wo_id` (PK)
-   - `part_id` (FK): Links to `Parts`
-   - `status`: ['Open', 'In Progress', 'Blocked', 'Completed']
-   - `priority`: ['Low', 'Medium', 'High', 'Critical']
-   - `due_date`: ISO 8601 Date String
-   - `notes`: Text
+## 3. Component Diagram (Backend & Submodules)
+*Zooming into the Python FastAPI Backend container to view internal logic blocks.*
 
-## NLP Abstraction Layer & Text-to-SQL
+```mermaid
+flowchart TD
+    classDef component fill:#85bbf0,color:#000,stroke:#5b82a7,stroke-width:2px
+    classDef ext_system fill:#999999,color:#fff,stroke:#6b6b6b,stroke-width:2px
+    classDef db fill:#438dd5,color:#fff,stroke:#3c7fc0,stroke-width:2px
+    classDef edgeLabel fill:none,stroke:none
 
-The `rag/nlp_agent.py` module encapsulates the complexity of querying the database.
-Using LangChain's `create_sql_query_chain`:
-1. The agent inspects the `sqlite://` URI and fetches the DDL schema for the three tables.
-2. An LLM (by default, `gpt-4o-mini`) uses this context alongside the user's prompt to synthesize a syntactically correct SQL query.
-3. The query is executed safely using `QuerySQLDataBaseTool`.
-4. The raw database output (e.g., `[('Global Machining Solutions', 'PT-1002')]`) is passed back to the LLM via a custom `PromptTemplate` to produce a user-friendly conversational response.
+    GeminiAPI["Google Gemini API<br>[External System]"]:::ext_system
+    Database[("SQLite DB<br>[Local File]")]:::db
 
-### Security and Extensions
-- Currently, the agent uses read-only capability by design, relying purely on SELECT queries to answer analytical questions. Next-gen enhancements may support conversational CRUD functions to update Work Order statuses interactively.
+    subgraph BackendApp ["FastAPI Application"]
+        Router["main.py<br>[FastAPI Endpoints]<br><br>Routes /api/chat & /api/schema"]:::component
+        AgentModule["nlp_agent.py<br>[LangChain Pipeline]<br><br>Interacts with DB & Gemini"]:::component
+        SQLTool["QuerySQLDatabaseTool<br>[LangChain Utility]<br><br>Executes safe SELECTs"]:::component
+    end
+
+    Router -->|"Passes parameters"| AgentModule
+    AgentModule -->|"Validates queries"| SQLTool
+    SQLTool --> Database
+    AgentModule --- Rel1["Sends schema DB schema & prompts"]:::edgeLabel
+    Rel1 --> GeminiAPI
+    
+    style BackendApp fill:none,stroke:#666,stroke-width:2px,stroke-dasharray: 5 5
+```
+
+## Architectural Design Decisions & Trade-offs
+1. **Monolithic Storage (SQLite):** For MVP velocity and Cloud Run cost-controls (Scale to Zero), SQLite provides a simple, self-contained persistence layer perfectly demonstrating relational logic (`CPS_NAV_01`) without paying for Cloud SQL per-hour connectivity. 
+2. **Decoupled Architecture**: By pivoting away from Streamlit to a FastAPI + React structure, the frontend UI and the backend logic can scale totally independently or be migrated to different serverless handlers (e.g. AWS Lambda / Cloudfront).
+3. **Google Gemini Context Allocation**: Gemini `1.5-Flash` serves as an industry-leading zero-cost NLP pipeline. The `langchain-google-genai` integration isolates the complexity of context window tracking.
