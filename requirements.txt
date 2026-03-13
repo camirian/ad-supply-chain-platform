@@ -1,0 +1,5 @@
+streamlit==1.42.0
+langchain==0.3.18
+langchain-openai==0.3.5
+langchain-community==0.3.17
+sqlalchemy==2.0.38
