@@ -47,7 +47,23 @@ def chat_endpoint(request: ChatRequest):
         answer = query_agent(request.prompt, api_key=key_to_use)
         return ChatResponse(response=answer)
     except Exception as e:
-        raise HTTPException(status_code=500, detail=str(e))
+        error_msg = str(e)
+        if "404" in error_msg or "not found" in error_msg.lower():
+            try:
+                import urllib.request
+                import json
+                req = urllib.request.Request(f"https://generativelanguage.googleapis.com/v1beta/models?key={key_to_use}")
+                with urllib.request.urlopen(req) as response:
+                    models_data = json.loads(response.read().decode())
+                    available_models = [m['name'] for m in models_data.get('models', []) if 'generateContent' in m.get('supportedGenerationMethods', [])]
+                    return ChatResponse(
+                        response=f"**Model Error Identified.** The requested model was not found.\n\nHere are the models your API key actually has access to:\n" + 
+                                 "\n".join([f"- `{m}`" for m in available_models]) +
+                                 "\n\nPlease update `rag/nlp_agent.py` to use one of these models specifically."
+                    )
+            except Exception as inner_e:
+                error_msg += f"\n\n(Also failed to fetch models list: {inner_e})"
+        raise HTTPException(status_code=500, detail=error_msg)
 
 @app.get("/api/docs")
 def list_docs():
