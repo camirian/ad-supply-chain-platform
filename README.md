@@ -3,7 +3,7 @@
 An enterprise-grade platform demonstrating an Aerospace & Defense supply chain conversational agent. 
 This project leverages a LangChain text-to-SQL architecture to query a relational SQLite database using natural language. It boasts a fully decoupled V2 architecture consisting of a **FastAPI** backend and a **Vite React** frontend natively structured for zero-billing Cloud Run deployments.
 
-> **Traceability**: This repository specifically fulfills the following Enterprise IT and Applied AI capabilities from my portfolio:
+> **Traceability**: This project specifically fulfills the following Enterprise IT and Applied AI capabilities from my portfolio:
 > *   **CPS_CAP_05**: A&D Supply Chain AI Agent (Full-stack MVP utilizing LangChain and Google Gemini)
 > *   **CPS_NAV_01**: Architected the Shop Workload Management System for depot production control, leveraging relational database systems
 

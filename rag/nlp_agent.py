@@ -60,11 +60,8 @@ def query_agent(question: str, api_key: str = None) -> str:
     Convenience function to invoke the SQL agent with a given question.
     """
     chain = get_sql_agent(api_key=api_key)
-    try:
-        response = chain.invoke({"question": question})
-        return response
-    except Exception as e:
-        return f"Error executing query: {str(e)}"
+    response = chain.invoke({"question": question})
+    return response
 
 if __name__ == "__main__":
     sample_question = "Which supplier has the highest rating, and what part do they supply?"
