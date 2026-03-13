@@ -101,3 +101,6 @@ td { color: var(--text-secondary); }
 
 /* Helpers */
 .loading-state { padding: 40px; color: var(--text-secondary); }
+.suggestions-container { display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 20px; justify-content: center; padding: 0 16px; }
+.suggestion-btn { background: var(--bg-hover); border: 1px solid var(--border); color: var(--text-secondary); padding: 10px 16px; border-radius: 20px; font-size: 0.85rem; cursor: pointer; transition: 0.2s; }
+.suggestion-btn:hover { background: var(--bg-card); color: var(--accent-secondary); border-color: var(--accent-secondary); }

@@ -103,8 +103,15 @@ const LandingPage = ({ apiKey, setApiKey }) => {
 };
 
 const AgentPage = ({ apiKey }) => {
+  const suggestionQueries = [
+    "List all suppliers located in Seattle.",
+    "What are the most expensive parts in our inventory?",
+    "Show me all work orders for the Titanium Compressor Blade.",
+    "Which supplier has the highest rating, and what part do they supply?"
+  ];
+
   const [messages, setMessages] = useState([
-    { role: 'assistant', content: 'Hello! I am your A&D supply chain tracking agent. Ensure you have provided your Gemini API Key in the Mission Control center. How can I assist you today?' }
+    { role: 'assistant', content: `**Welcome to the A&D Supply Chain Intelligence Agent.**\n\nI am a LangChain text-to-SQL agent connected locally to your SQLite supply chain database. I can answer complex questions about your Parts, Suppliers, and Work Orders by writing and executing SQL queries autonomously on your behalf.\n\nEnsure you have configured your Mission Control with a valid Gemini API key to begin!` }
   ]);
   const [input, setInput] = useState('');
   const [loading, setLoading] = useState(false);
@@ -164,6 +171,13 @@ const AgentPage = ({ apiKey }) => {
               </div>
             )}
             <div ref={bottomRef} />
+          </div>
+          <div className="suggestions-container">
+            {messages.length === 1 && suggestionQueries.map((q, idx) => (
+              <button key={idx} className="suggestion-btn" onClick={() => setInput(q)}>
+                {q}
+              </button>
+            ))}
           </div>
           <form onSubmit={handleSend} className="input-form">
             <input type="text" value={input} onChange={(e) => setInput(e.target.value)} placeholder="Query supply chain requirements..." />
