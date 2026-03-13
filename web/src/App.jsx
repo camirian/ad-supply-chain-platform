@@ -104,7 +104,7 @@ const LandingPage = ({ apiKey, setApiKey }) => {
 
 const AgentPage = ({ apiKey }) => {
   const suggestionQueries = [
-    "Which supplier has the highest rating, and what part do they supply?",
+    "List all suppliers located in Seattle.",
     "What are the most expensive parts in our inventory?",
     "Show me all work orders for the Titanium Compressor Blade.",
     "List all parts that currently have a stock quantity below 50."

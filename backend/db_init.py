@@ -13,7 +13,8 @@ def init_db(db_path="data/supply_chain.db"):
         name TEXT NOT NULL,
         rating REAL CHECK(rating >= 0 AND rating <= 5),
         certification_status TEXT,
-        contact_info TEXT
+        contact_info TEXT,
+        location TEXT
     )
     ''')
 
@@ -51,12 +52,12 @@ def init_db(db_path="data/supply_chain.db"):
 
     # Seed Suppliers
     suppliers = [
-        ('AeroTech Dynamics', 4.8, 'AS9100D Certified', 'contact@aerotech.com'),
-        ('Global Machining Solutions', 4.2, 'ISO 9001', 'sales@globalmachining.com'),
-        ('Precision Forgings', 3.9, 'Pending AS9100', 'info@precisionforgings.com'),
-        ('Quantum Electronics', 4.9, 'NADCAP Certified', 'support@quantumelectronics.com')
+        ('AeroTech Dynamics', 4.8, 'AS9100D Certified', 'contact@aerotech.com', 'Seattle'),
+        ('Global Machining Solutions', 4.2, 'ISO 9001', 'sales@globalmachining.com', 'Detroit'),
+        ('Precision Forgings', 3.9, 'Pending AS9100', 'info@precisionforgings.com', 'Cleveland'),
+        ('Quantum Electronics', 4.9, 'NADCAP Certified', 'support@quantumelectronics.com', 'San Jose')
     ]
-    cursor.executemany('INSERT INTO Suppliers (name, rating, certification_status, contact_info) VALUES (?, ?, ?, ?)', suppliers)
+    cursor.executemany('INSERT INTO Suppliers (name, rating, certification_status, contact_info, location) VALUES (?, ?, ?, ?, ?)', suppliers)
 
     # Fetch supplier IDs
     cursor.execute('SELECT name, supplier_id FROM Suppliers')
