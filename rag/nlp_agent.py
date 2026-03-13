@@ -45,10 +45,22 @@ Answer: """
     )
     
     answer = answer_prompt | llm | StrOutputParser()
+
+    def clean_sql(query_dict):
+        # Langchain create_sql_query_chain sometimes prefixes with "SQLQuery: "
+        # Or wraps it in ```sql ... ```
+        q = query_dict["query"]
+        if q.startswith("SQLQuery:"):
+            q = q[len("SQLQuery:"):].strip()
+        if q.startswith("```sql"):
+            q = q[len("```sql"):].strip()
+        if q.endswith("```"):
+            q = q[:-3].strip()
+        return q
     
     chain = (
         RunnablePassthrough.assign(query=write_query).assign(
-            result=itemgetter("query") | execute_query
+            result=clean_sql | execute_query
         )
         | answer
     )

@@ -10,7 +10,7 @@ See README for more details:
 https://github.com/google-gemini/deprecated-generative-ai-python/blob/main/README.md
 
   from google.generativeai.caching import CachedContent  # type: ignore[import]
-INFO:     Started server process [32814]
+INFO:     Started server process [33445]
 INFO:     Waiting for application startup.
 INFO:     Application startup complete.
 INFO:     Uvicorn running on http://0.0.0.0:8000 (Press CTRL+C to quit)
