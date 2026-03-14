@@ -6,5 +6,6 @@ __pycache__/
 .git/
 backend.log
 test_*.py
-*.md
-!requirements.txt
+CONTRIBUTING.md
+WALKTHROUGH.md
+ROADMAP.md
