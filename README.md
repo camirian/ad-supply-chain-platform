@@ -26,13 +26,13 @@ This project leverages a LangChain text-to-SQL architecture to query a relationa
 ### Interface Previews
 
 **1. Mission Control (Scale-to-Zero Landing Page)**
-![Landing Page](/home/caaren/.gemini/antigravity/brain/db992102-e29f-48c5-ac68-2d7b14e3d804/landing_page_1773437836609.png)
+![Landing Page](docs/assets/landing_page.png)
 
 **2. Semantic Logic Interface (Langchain SQL Agent)**
-![Agent Chat](/home/caaren/.gemini/antigravity/brain/db992102-e29f-48c5-ac68-2d7b14e3d804/agent_chat_query_1773437883110.png)
+![Agent Chat](docs/assets/agent_chat.png)
 
 **3. Ephemeral State Matrix (Database Schema Viewer)**
-![Validation Matrix](/home/caaren/.gemini/antigravity/brain/db992102-e29f-48c5-ac68-2d7b14e3d804/validation_matrix_1773437893568.png)
+![Validation Matrix](docs/assets/validation_matrix.png)
 
 
 ## Advanced Sample Queries

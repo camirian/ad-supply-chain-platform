@@ -26,11 +26,17 @@ The platform implements a fully decoupled, two-service Cloud Run architecture:
 4. **React Frontend:** Built a premium UI matching the Agentic Systems Verifier style — sidebar navigation, glassmorphism cards, suggestion chips, and an author footer.
 5. **Cloud Run Deployment:** Deployed both services with `--min-instances 0 --max-instances 2` for zero-billing when idle.
 
-## Post-Deployment Fixes
+## Post-Deployment Fixes & UI Enhancements
 
 1. **SQL Syntax Error:** Gemini was prefixing generated queries with `SQLQuery:`, causing `sqlite3.OperationalError`. Fixed by adding a `clean_sql()` parsing function in the LangChain pipeline.
 2. **Chrome Local Network Prompt:** The production frontend was falling back to `http://localhost:8000`. Fixed by creating `web/.env.production` so Vite bakes the Cloud Run backend URL into the production bundle.
 3. **Model 404 Errors:** The hardcoded `gemini-1.5-flash` identifier was updated to `gemini-2.5-flash` with dynamic model discovery fallback.
+4. **Global Breadcrumb Navigation:** Implemented a unified `PageNavigation` component across all pages for consistent breadcrumb tracking.
+5. **"How It Works" Button:** Added a global entry point to documentation in the top-right corner of every page.
+6. **Unified Layout:** Removed `max-width` constraints to provide a consistent Full-Width experience across all application sections.
+
+### Redesigned Documentation Interface
+![Documentation Page](docs/assets/documentation_page.png)
 
 ## Verification
 

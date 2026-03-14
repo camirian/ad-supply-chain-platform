@@ -51,6 +51,29 @@ const Sidebar = () => {
   );
 };
 
+const PageNavigation = ({ crumbs }) => {
+  const navigate = useNavigate();
+  return (
+    <div className="page-top-nav">
+      <nav className="breadcrumb">
+        <span className="breadcrumb-link" onClick={() => navigate('/')}>Projects</span>
+        {crumbs.map((crumb, idx) => (
+          <React.Fragment key={idx}>
+            <span className="breadcrumb-sep">/</span>
+            <span className={idx === crumbs.length - 1 ? "breadcrumb-current" : "breadcrumb-link"} 
+                  onClick={() => idx < crumbs.length - 1 ? navigate(crumb.path) : null}>
+              {crumb.label}
+            </span>
+          </React.Fragment>
+        ))}
+      </nav>
+      <button className="btn-secondary btn-sm" onClick={() => navigate('/docs', { state: { doc: 'README.md' } })}>
+        <BookOpen size={16} /> How It Works
+      </button>
+    </div>
+  );
+};
+
 const LandingPage = ({ apiKey, setApiKey }) => {
   const [tempKey, setTempKey] = useState(apiKey || '');
   const navigate = useNavigate();
@@ -65,15 +88,13 @@ const LandingPage = ({ apiKey, setApiKey }) => {
 
   return (
     <div className="page-container landing">
+      <PageNavigation crumbs={[{ label: 'Mission Control' }]} />
       <div className="hero-section">
         <h1 className="hero-title">Aerospace & Defense Supply Chain</h1>
         <p className="hero-description">
           Your AI-Powered Systems Engineering Co-Pilot. Automate the interrogation of your supply chain database using native, zero-billing Gemini LangChain reasoning blocks.
         </p>
         <div className="hero-actions">
-          <button className="btn-secondary" onClick={() => navigate('/docs')}>
-            <BookOpen size={18} /> How It Works
-          </button>
         </div>
       </div>
 
@@ -117,6 +138,7 @@ const LandingPage = ({ apiKey, setApiKey }) => {
 };
 
 const AgentPage = ({ apiKey }) => {
+  const navigate = useNavigate();
   const suggestionQueries = [
     "List all suppliers located in Seattle.",
     "What are the most expensive parts in our inventory?",
@@ -161,10 +183,11 @@ const AgentPage = ({ apiKey }) => {
 
   return (
     <div className="page-container chat-layout">
-        <header className="page-header">
+        <PageNavigation crumbs={[{ label: 'Semantic Logic Interface' }]} />
+        <div className="header-title-group">
           <h1>Semantic Logic Interface</h1>
           <p>Probe the intelligence matrix via conversational abstraction logic.</p>
-        </header>
+        </div>
         <div className="chat-window">
           <div className="messages">
             {messages.map((m, idx) => (
@@ -203,6 +226,7 @@ const AgentPage = ({ apiKey }) => {
 };
 
 const DatabasePage = () => {
+  const navigate = useNavigate();
   const [schema, setSchema] = useState(null);
 
   useEffect(() => {
@@ -214,10 +238,11 @@ const DatabasePage = () => {
 
   return (
     <div className="page-container schema-layout">
-      <header className="page-header">
-        <h1>Ephemeral State Matrix</h1>
-        <p>Live memory block of the Cloud Run verification database.</p>
-      </header>
+      <PageNavigation crumbs={[{ label: 'Ephemeral State Matrix' }]} />
+      <div className="header-title-group">
+          <h1>Ephemeral State Matrix</h1>
+          <p>Live memory block of the Cloud Run verification database.</p>
+        </div>
       <div className="schema-container">
         {schema ? Object.keys(schema).map(table => (
           <div key={table} className="table-card">
@@ -246,15 +271,18 @@ const DocsPage = () => {
   const [activeDoc, setActiveDoc] = useState('');
   const [content, setContent] = useState('');
   const navigate = useNavigate();
+  const location = useLocation();
 
   useEffect(() => {
     fetch(`${API_BASE}/api/docs`)
       .then(res => res.json())
       .then(data => {
         setDocs(data.docs);
-        if (data.docs.length > 0) loadDoc(data.docs[0]);
+        // Prioritize doc from navigation state (e.g. README.md from "How It Works")
+        const targetDoc = location.state?.doc || data.docs[0];
+        if (targetDoc) loadDoc(targetDoc);
       });
-  }, []);
+  }, [location.key]); // location.key changes on every navigation, ensuring reset works
 
   const loadDoc = async (docId) => {
     setActiveDoc(docId);
@@ -280,19 +308,8 @@ const DocsPage = () => {
 
   return (
     <div className="page-container docs-layout">
-      {/* Breadcrumb + How It Works */}
-      <div className="docs-topbar">
-        <nav className="docs-breadcrumb">
-          <span className="breadcrumb-link" onClick={() => navigate('/')}>Projects</span>
-          <span className="breadcrumb-sep">/</span>
-          <span className="breadcrumb-current">Documentation</span>
-        </nav>
-        <button className="btn-secondary btn-sm" onClick={() => navigate('/docs')}>
-          <BookOpen size={16} /> How It Works
-        </button>
-      </div>
-
-      {/* Description */}
+      <PageNavigation crumbs={[{ label: 'Documentation' }]} />
+      
       <div className="docs-description">
         <h1><FileText size={22} /> Project Knowledge Base</h1>
         <p>Access the complete repository of technical documentation, architectural guides, and system manuals. The Supply Chain Agent uses these documents as reference material when brainstorming query methods for your complex requirements.</p>
