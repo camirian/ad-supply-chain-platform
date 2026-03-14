@@ -74,7 +74,7 @@ def chat_endpoint(request: ChatRequest):
 @app.get("/api/docs")
 def list_docs():
     """Returns a list of available documentation files."""
-    return {"docs": ["README.md", "DEPLOY.md", "docs/ARCHITECTURE.md"]}
+    return {"docs": ["README.md", "DEPLOY.md", "CONTRIBUTING.md", "WALKTHROUGH.md", "ROADMAP.md", "docs/ARCHITECTURE.md"]}
 
 @app.get("/api/docs/{doc_id:path}")
 def get_doc(doc_id: str):

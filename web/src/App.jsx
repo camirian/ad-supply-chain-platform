@@ -245,6 +245,7 @@ const DocsPage = () => {
   const [docs, setDocs] = useState([]);
   const [activeDoc, setActiveDoc] = useState('');
   const [content, setContent] = useState('');
+  const navigate = useNavigate();
 
   useEffect(() => {
     fetch(`${API_BASE}/api/docs`)
@@ -267,12 +268,37 @@ const DocsPage = () => {
     }
   };
 
+  const handleDownload = () => {
+    const blob = new Blob([content], { type: 'text/markdown' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = activeDoc.replace(/\//g, '_');
+    a.click();
+    URL.revokeObjectURL(url);
+  };
+
   return (
     <div className="page-container docs-layout">
-      <header className="page-header">
-        <h1>Project Knowledge Base</h1>
-        <p>Access the complete repository of technical documentation, architectural guides, and system manuals.</p>
-      </header>
+      {/* Breadcrumb + How It Works */}
+      <div className="docs-topbar">
+        <nav className="docs-breadcrumb">
+          <span className="breadcrumb-link" onClick={() => navigate('/')}>Projects</span>
+          <span className="breadcrumb-sep">/</span>
+          <span className="breadcrumb-current">Documentation</span>
+        </nav>
+        <button className="btn-secondary btn-sm" onClick={() => navigate('/docs')}>
+          <BookOpen size={16} /> How It Works
+        </button>
+      </div>
+
+      {/* Description */}
+      <div className="docs-description">
+        <h1><FileText size={22} /> Project Knowledge Base</h1>
+        <p>Access the complete repository of technical documentation, architectural guides, and system manuals. The Supply Chain Agent uses these documents as reference material when brainstorming query methods for your complex requirements.</p>
+      </div>
+
+      {/* Main content: doc list (secondary sidebar) + viewer */}
       <div className="docs-content-wrapper">
         <aside className="docs-sidebar">
           <h4>AVAILABLE DOCUMENTS</h4>
@@ -283,7 +309,12 @@ const DocsPage = () => {
           ))}
         </aside>
         <section className="docs-viewer">
-          <h3>{activeDoc}</h3>
+          <div className="docs-viewer-header">
+            <span className="docs-viewer-title">{activeDoc}</span>
+            <button className="docs-download-btn" onClick={handleDownload}>
+              <Upload size={14} style={{transform: 'rotate(180deg)'}} /> Download Source
+            </button>
+          </div>
           <div className="markdown-body">
             <ReactMarkdown>{content}</ReactMarkdown>
           </div>
