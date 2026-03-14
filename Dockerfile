@@ -1,18 +1,24 @@
-FROM python:3.10-slim
+FROM node:20-alpine AS builder
 
 WORKDIR /app
+COPY web/package*.json ./
+RUN npm ci
 
-COPY requirements.txt .
-RUN pip install --no-cache-dir -r requirements.txt
+COPY web/ ./
 
-COPY . .
+# .env.production is already in web/ — Vite reads it automatically during build
+RUN npm run build
 
-# Seed the database during build so that ephemeral Cloud Run instances 
-# boot with the required snapshot data
-RUN python backend/db_init.py
+# Production runtime container
+FROM node:20-alpine
+WORKDIR /app
 
-# Cloud Run defines the PORT environment variable natively
-ENV PORT=8000
-EXPOSE 8000
+RUN npm install -g serve
 
-CMD ["sh", "-c", "uvicorn backend.main:app --host 0.0.0.0 --port ${PORT}"]
+COPY --from=builder /app/dist ./dist
+
+# Cloud Run injects $PORT (usually 8080)
+ENV PORT=8080
+EXPOSE 8080
+
+CMD ["sh", "-c", "serve -s dist -l tcp://0.0.0.0:${PORT}"]

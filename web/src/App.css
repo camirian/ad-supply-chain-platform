@@ -86,7 +86,7 @@ th { background: rgba(0,0,0,0.3); color: var(--text-secondary); font-weight: 600
 td { color: var(--text-secondary); }
 
 /* Docs Viewer — Redesigned to match ASV */
-.docs-layout { padding: 0; }
+.docs-layout { padding: 0; max-width: 100%; }
 .docs-topbar { display: flex; justify-content: space-between; align-items: center; padding: 12px 40px; border-bottom: 1px solid var(--border); }
 .docs-breadcrumb { display: flex; align-items: center; gap: 8px; font-size: 0.9rem; }
 .breadcrumb-link { color: var(--text-secondary); cursor: pointer; transition: 0.2s; }

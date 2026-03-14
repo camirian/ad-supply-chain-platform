@@ -304,13 +304,13 @@ const DocsPage = () => {
           <h4>AVAILABLE DOCUMENTS</h4>
           {docs.map(doc => (
             <button key={doc} className={`doc-link ${activeDoc === doc ? 'active' : ''}`} onClick={() => loadDoc(doc)}>
-              <FileText size={16}/> {doc}
+              <FileText size={16}/> {doc.split('/').pop()}
             </button>
           ))}
         </aside>
         <section className="docs-viewer">
           <div className="docs-viewer-header">
-            <span className="docs-viewer-title">{activeDoc}</span>
+            <span className="docs-viewer-title">{activeDoc.split('/').pop()}</span>
             <button className="docs-download-btn" onClick={handleDownload}>
               <Upload size={14} style={{transform: 'rotate(180deg)'}} /> Download Source
             </button>
